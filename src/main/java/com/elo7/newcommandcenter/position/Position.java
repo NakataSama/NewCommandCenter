@@ -15,21 +15,15 @@ public class Position {
 		return x;
 	}
 
-	public void setX(int x) {
-		this.x = x;
-	}
-
 	public int getY() {
 		return y;
 	}
 
-	public void setY(int y) {
-		this.y = y;
-	}
-
 	@Override
 	public String toString() {
-		return "Position X = " + x + ", Y = " + y;
+		return new StringBuilder()
+				.append(" | Position X = ").append(this.x)
+				.append(" , Y = ").append(this.y).toString();
 	}
 	
 	public Position changeCurrentPosition(Orientation orientation, Position currentPosition) {
