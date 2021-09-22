@@ -1,6 +1,6 @@
 # New Command Center
 
-Bem vindo ao novo centro de comando da NASA! Para testar nosso lançamento de veículos para um terreno em Marte, siga as seguintes instruções:
+Bem vindo ao novo centro de comando da NASA! Para testar nosso lançamento de veículos para um terreno em Marte.
 
 ## Classes
 
