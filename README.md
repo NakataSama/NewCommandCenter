@@ -6,7 +6,7 @@ Bem vindo ao novo centro de comando da NASA! Para testar nosso lançamento de ve
 
 No método **main**, localizado na classe **App**, temos o seguinte trecho de código:
 
-```sql
+```java
 int x = 20; //Type your field horizontal size here;
 int y = 20; //Type your field vertical size here;
 int numberOfVehicles = 2; //Type how many vehicles would you like to deploy on the field
