@@ -1,23 +1,31 @@
 package com.elo7.newcommandcenter;
 
-import java.util.ArrayList;
+import java.awt.event.TextEvent;
+import java.util.Scanner;
 
-import com.elo7.newcommandcenter.field.Field;
-import com.elo7.newcommandcenter.orientation.Orientation;
-import com.elo7.newcommandcenter.position.Position;
-import com.elo7.newcommandcenter.probe.Probe;
+public class App {
 
-public class App 
-{
     public static void main( String[] args ) {
-    	Field field = new Field(1, new Position(10, 10) , new ArrayList<Probe>());
-    	Probe probe = new Probe(1, new Position(1, 1), Orientation.NORTH, 0, field);
-    	Probe probe2 = probe.rotate("l").move();
-    	
-    	field.addProbeToField(probe);
-    	field.addProbeToField(probe2);
-    	
-    	System.out.println(field);
-    	field.getProbes().forEach(p -> System.out.println(p));
+
+		int x = 20; //Type your field horizontal size here;
+		int y = 20; //Type your field vertical size here;
+		int numberOfVehicles = 2; //Type how many vehicles would you like to deploy on the field
+
+		CommandCenter commandCenter = new CommandCenter();
+		commandCenter.buildCommandCenter(x, y, numberOfVehicles);
+
+		Scanner sc = new Scanner(System.in);
+		int commandChoice = 0;
+		while (commandChoice != 2) {
+			System.out.println("Choose which vehicle to command by typing ID");
+			int vehicleId = sc.nextInt();
+
+			System.out.println("Type your command (valid characters = L, R, M)");
+			String command = sc.next();
+
+			commandCenter.executeCommand(vehicleId, command);
+			System.out.println("Any number - More commands, 2 - Exit");
+			commandChoice = sc.nextInt();
+		}
     }
 }

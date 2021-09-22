@@ -26,35 +26,33 @@ public class Position {
 				.append(" , Y = ").append(this.y).toString();
 	}
 	
-	public Position changeCurrentPosition(Orientation orientation, Position currentPosition) {
+	public Position changeCurrentVehiclePosition(Orientation orientation, int numberOfSteps) {
 		
 		if (orientation.equals(Orientation.NORTH)) 
-			return new Position(currentPosition.getX(), currentPosition.getY()+1);
+			return new Position(x, y + numberOfSteps);
 		
 		else if (orientation.equals(Orientation.NORTHEAST)) 
-			return new Position(currentPosition.getX()+1, currentPosition.getY()+1);
+			return new Position(x + numberOfSteps, y + numberOfSteps);
 		
 		else if (orientation.equals(Orientation.EAST)) 
-			return new Position(currentPosition.getX()+1, currentPosition.getY());
+			return new Position(x + numberOfSteps, y);
 		
 		else if (orientation.equals(Orientation.SOUTHEAST)) 
-			return new Position(currentPosition.getX()+1, currentPosition.getY()-1);
+			return new Position(x + numberOfSteps, y - numberOfSteps);
 		
 		else if (orientation.equals(Orientation.SOUTH)) 
-			return new Position(currentPosition.getX(), currentPosition.getY()-1);
+			return new Position(x, y - numberOfSteps);
 		
 		else if (orientation.equals(Orientation.SOUTHWEST)) 
-			return new Position(currentPosition.getX()+1, currentPosition.getY()-1);
+			return new Position(x + numberOfSteps, y - numberOfSteps);
 		
 		else if (orientation.equals(Orientation.WEST)) 
-			return new Position(currentPosition.getX()-1, currentPosition.getY());
+			return new Position(x - numberOfSteps, y);
 		
 		else if (orientation.equals(Orientation.NORTHWEST)) 
-			return new Position(currentPosition.getX()-1, currentPosition.getY()+1);
+			return new Position(x - numberOfSteps, y + numberOfSteps);
 		
 		else 
-			return new Position(currentPosition.getX(), currentPosition.getY());
-		
+			return new Position(x, y);
 	}
-	
 }

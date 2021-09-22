@@ -1,22 +1,26 @@
 package com.elo7.newcommandcenter.field;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.elo7.newcommandcenter.position.Position;
-import com.elo7.newcommandcenter.probe.Probe;
+import com.elo7.newcommandcenter.vehicle.Vehicle;
+import com.elo7.newcommandcenter.vehicle.probe.Probe;
 
 public class Field {
 	
 	private int id;
 	private Position position;
-	private List<Probe> probes;
-	
+	private List<Vehicle> vehicles = new ArrayList<Vehicle>();
+
 	public Field() {}
 	
-	public Field(int id, Position position, List<Probe> probes) {
+	public Field(int id, Position position, List<Vehicle> vehicles) {
 		this.id = id;
 		this.position = position;
-		this.probes = probes;
+		this.vehicles = vehicles;
 	}
 	
 	public int getId() {
@@ -27,8 +31,8 @@ public class Field {
 		return this.position;
 	}
 	
-	public List<Probe> getProbes() {
-		return this.probes;
+	public List<Vehicle> getVehicles() {
+		return this.vehicles;
 	}
 
 	@Override
@@ -37,33 +41,55 @@ public class Field {
 				.append("Field ID = ").append(id)
 				.append(" | Max X = ").append(position.getX())
 				.append(" | Max Y = ").append(position.getY())
-				.append(" | Number of Probes = ").append(probes.size()).toString();
+				.append(" | Number of Vehicles = ").append(vehicles.size()).toString();
 	}
 
-	public Field addProbeToField(Probe probe) {
-		
-		if(!isProbeBeyondFieldLimits(probe))
-			throw new RuntimeException("This probe is out of the field bounds");
-		
-		this.probes.forEach(p -> {
-			if(p.getPosition().getX() == probe.getPosition().getX()
-				&& p.getPosition().getY() == probe.getPosition().getY())
-				throw new RuntimeException("There's a probe in this position! Try another one");
-		});
-		
-		this.probes.add(probe);
-		
-		return new Field(id, position, probes);
+	public Field saveVehicle(Vehicle vehicle) {
+
+		if(!isVehiclePositionWithinFieldLimits(vehicle.getPosition()))
+			throw new RuntimeException("This vehicle will be out of bounds!");
+
+		if(!isPositionAvailable(vehicle.getId(), vehicle.getPosition())) {
+			throw new RuntimeException("There's a vehicle in this position");
+		}
+
+		if(getVehicleById(vehicle.getId()).isPresent()) {
+			int index = vehicles.indexOf(getVehicleById(vehicle.getId()).get());
+			vehicles.set(index, vehicle);
+			return new Field(id, position, vehicles);
+		} else {
+			vehicles.add(vehicle);
+			return new Field(id, position, vehicles);
+		}
 	}
-	
-	private boolean isProbeBeyondFieldLimits(Probe probe) {
-		if(probe.getPosition().getX() > this.position.getX() 
-			|| probe.getPosition().getY() > this.position.getY()
-			|| probe.getPosition().getX() < 0
-			|| probe.getPosition().getY() < 0)
+
+	private boolean isVehiclePositionWithinFieldLimits(Position vehiclePosition) {
+		if(vehiclePosition.getX() > position.getX()
+				|| vehiclePosition.getY() > position.getY()
+				|| vehiclePosition.getX() < 0
+				|| vehiclePosition.getY() < 0)
 			return false;
 		else
 			return true;
 	}
 
+	public boolean isPositionAvailable(int vehicleId, Position vehiclePosition) {
+		for (Vehicle v: vehicles) {
+			if (v.getPosition().getX() == vehiclePosition.getX()
+				&& v.getPosition().getY() == vehiclePosition.getY()) {
+
+				if(v.getId() == vehicleId)
+					return true;
+				else
+					return false;
+			}
+		}
+		return true;
+	}
+
+	public Optional<Vehicle> getVehicleById(int id) {
+		return this.vehicles.stream()
+				.filter(v -> v.getId() == id)
+				.findAny();
+	}
 }

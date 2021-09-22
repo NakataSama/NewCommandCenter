@@ -34,11 +34,30 @@ public enum Orientation {
 	public static Orientation getOrientationById(int id) {
 		return Orientation.BY_ID.get(id);
 	}
+
+	public Orientation changeOrientationFromDirectionInput(char direction) {
+		int orientationId = getId();
+		Orientation orientation = getOrientationById(orientationId);
+
+		if (direction == 'l') {
+			if (orientation == Orientation.NORTH)
+				orientationId = 8;
+			else
+				orientationId--;
+		}
+
+		if (direction == 'r') {
+			if (orientation == Orientation.NORTHWEST)
+				orientationId = 1;
+			else
+				orientationId++;
+		}
+		return getOrientationById(orientationId);
+	}
 	
 	static {
 		BY_ID = new HashMap<Integer, Orientation>();
 	    for(Orientation orientation : values()) 
 	    	BY_ID.put(orientation.getId(), orientation);	
 	}
-	
 }
