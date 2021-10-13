@@ -1,13 +1,11 @@
 package com.elo7.newcommandcenter.field;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Collectors;
 
 import com.elo7.newcommandcenter.position.Position;
 import com.elo7.newcommandcenter.vehicle.Vehicle;
-import com.elo7.newcommandcenter.vehicle.probe.Probe;
 
 public class Field {
 	
@@ -50,7 +48,7 @@ public class Field {
 			throw new RuntimeException("This vehicle will be out of bounds!");
 
 		if(!isPositionAvailable(vehicle.getId(), vehicle.getPosition())) {
-			throw new RuntimeException("There's a vehicle in this position");
+			throw new RuntimeException("There's another vehicle in this position!");
 		}
 
 		if(getVehicleById(vehicle.getId()).isPresent()) {
@@ -74,17 +72,38 @@ public class Field {
 	}
 
 	public boolean isPositionAvailable(int vehicleId, Position vehiclePosition) {
-		for (Vehicle v: vehicles) {
-			if (v.getPosition().getX() == vehiclePosition.getX()
-				&& v.getPosition().getY() == vehiclePosition.getY()) {
+		Map<Integer, Position> mappedPositions = vehicles.stream()
+				.collect(Collectors.toMap(Vehicle::getId, Vehicle::getPosition));
 
-				if(v.getId() == vehicleId)
-					return true;
-				else
-					return false;
-			}
-		}
-		return true;
+		boolean isVehiclePresentWithId = mappedPositions.containsKey(vehicleId);
+		boolean isPositionOccupied = mappedPositions.containsValue(vehiclePosition);
+
+		if (!isPositionOccupied)
+			return true;
+		else if (isPositionOccupied
+				&& isVehiclePresentWithId
+				&& mappedPositions.get(vehicleId).equals(vehiclePosition))
+			return true;
+		else
+			return false;
+//		for (Map.Entry<Integer, Position> vehicle : mappedPositions.entrySet()) {
+//			if (vehicle.getValue().equals(vehiclePosition)) {
+//				if (vehicle.getKey().equals(vehicleId))
+//					return true;
+//				else
+//					return false;
+//			}
+//		}
+//		for (Vehicle v: vehicles) {
+//			if(v.getPosition().equals(vehiclePosition)) {
+//
+//				if(v.getId() == vehicleId)
+//					return true;
+//				else
+//					return false;
+//			}
+//		}
+//		return true;
 	}
 
 	public Optional<Vehicle> getVehicleById(int id) {

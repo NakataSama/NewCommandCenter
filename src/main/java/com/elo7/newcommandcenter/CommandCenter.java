@@ -23,31 +23,29 @@ public class CommandCenter {
 
         try {
             System.out.println("Choose which vehicle to command by typing ID");
-            vehicleId = sc.nextInt();
+            vehicleId = Integer.parseInt(sc.next());
 
             System.out.println("Type your command (valid characters = L, R, M)");
             command = sc.next();
 
             executeCommand(vehicleId, command);
+            printFieldStatus();
+
+            System.out.println("Continue with more commands?");
+            System.out.println("Respond with y [yes] or n [no]");
+
+            command = sc.next();
+
+            if (command.equalsIgnoreCase("y"))
+                return command;
+            else if (command.equalsIgnoreCase("n"))
+                return command;
+            else
+                throw new RuntimeException("Invalid command!");
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            return "y";
+            return "";
         }
-
-        System.out.println("Continue with more commands?");
-        System.out.println("Respond with y [yes] or n [no]");
-        System.out.println("Respond with p to print the field status");
-        command = sc.next();
-
-        if (command.equalsIgnoreCase("y"))
-            return command;
-        else if (command.equalsIgnoreCase("n"))
-            return command;
-        else if (command.equalsIgnoreCase("p")) {
-            printFieldStatus();
-            return command;
-        } else
-            throw new RuntimeException("Invalid command!");
     }
 
     public void buildCommandCenter(int x, int y, int numberOfVehicles) {
@@ -114,7 +112,9 @@ public class CommandCenter {
     }
 
     private void printFieldStatus() {
+        System.out.println("===== FIELD STATUS =====");
         System.out.println(field);
         field.getVehicles().forEach(System.out::println);
+        System.out.println("========= END =========");
     }
 }

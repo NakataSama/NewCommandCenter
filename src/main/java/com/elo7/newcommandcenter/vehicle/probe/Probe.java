@@ -29,11 +29,7 @@ public class Probe extends Vehicle {
 	@Override
 	public Probe move() {
 		Position newPosition = getPosition().changeCurrentVehiclePosition(getOrientation(), 1);
-		if (field.isPositionAvailable(getId(), newPosition)) {
-			return new Probe(getId(),getName(), newPosition, getOrientation(), movements+1, field);
-		} else {
-			return new Probe(getId(), getName(), getPosition(), getOrientation(), movements, field);
-		}
+		return new Probe(getId(),getName(), newPosition, getOrientation(), movements+1, field);
 	}
 
 	@Override
