@@ -47,7 +47,7 @@ public class CommandCenter {
         }
     }
 
-    public void buildCommandCenter(int x, int y, int numberOfVehicles) {
+    public boolean buildCommandCenter(int x, int y, int numberOfVehicles) {
         if (x * y < numberOfVehicles)
             throw new RuntimeException("Too many vehicles for this field");
 
@@ -60,6 +60,7 @@ public class CommandCenter {
         field = buildField(x, y);
         field = buildVehicles(field, numberOfVehicles);
         printFieldStatus();
+        return true;
     }
 
     private void executeCommand(int id, String command) {
