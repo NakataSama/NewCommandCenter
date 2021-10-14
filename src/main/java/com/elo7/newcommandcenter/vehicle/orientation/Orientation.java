@@ -1,4 +1,4 @@
-package com.elo7.newcommandcenter.orientation;
+package com.elo7.newcommandcenter.vehicle.orientation;
 
 import java.util.HashMap;
 import java.util.Map;

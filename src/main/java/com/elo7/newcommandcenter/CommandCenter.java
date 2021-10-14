@@ -1,13 +1,12 @@
 package com.elo7.newcommandcenter;
 
 import com.elo7.newcommandcenter.field.Field;
-import com.elo7.newcommandcenter.orientation.Orientation;
+import com.elo7.newcommandcenter.vehicle.orientation.Orientation;
 import com.elo7.newcommandcenter.position.Position;
 import com.elo7.newcommandcenter.vehicle.Vehicle;
 import com.elo7.newcommandcenter.vehicle.probe.Probe;
 
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class CommandCenter {
@@ -43,7 +42,7 @@ public class CommandCenter {
             else
                 throw new RuntimeException("Invalid command!");
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            System.out.println(e.toString());
             return "";
         }
     }
@@ -112,9 +111,28 @@ public class CommandCenter {
     }
 
     private void printFieldStatus() {
-        System.out.println("===== FIELD STATUS =====");
-        System.out.println(field);
-        field.getVehicles().forEach(System.out::println);
+        StringBuilder status = new StringBuilder();
+        status.append("===== FIELD STATUS =====").append("\n");
+        for (int i = field.getPosition().getY()-1; i >=0 ; i--) {
+            List<Position> occupiedPositionsByRow = field.getVehiclesPositionsByYCoordinate(i);
+
+            for (int j = 0; j < field.getPosition().getX(); j++) {
+                int coordinate = j;
+                boolean isXCoordinateOccupied = occupiedPositionsByRow.stream()
+                        .anyMatch(position -> position.getX() == coordinate);
+
+                if (isXCoordinateOccupied)
+                    status.append("[ x ] ");
+                else
+                    status.append("[   ] ");
+            }
+            status.append("\n");
+        }
+        System.out.println(status);
+        field.getVehicles()
+                .stream()
+                .sorted(Comparator.comparing(Vehicle::getId))
+                .forEach(System.out::println);
         System.out.println("========= END =========");
     }
 }

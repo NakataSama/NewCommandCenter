@@ -1,7 +1,6 @@
 package com.elo7.newcommandcenter.field;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 import com.elo7.newcommandcenter.position.Position;
@@ -72,21 +71,22 @@ public class Field {
 	}
 
 	public boolean isPositionAvailable(int vehicleId, Position vehiclePosition) {
-		Map<Integer, Position> mappedPositions = vehicles.stream()
+		Map<Integer, Position> vehicleIdToPosition = vehicles.stream()
 				.collect(Collectors.toMap(Vehicle::getId, Vehicle::getPosition));
 
-		boolean isVehiclePresentWithId = mappedPositions.containsKey(vehicleId);
-		boolean isPositionOccupied = mappedPositions.containsValue(vehiclePosition);
+		boolean isVehiclePresentWithId = vehicleIdToPosition.containsKey(vehicleId);
+		boolean isPositionOccupied = vehicleIdToPosition.containsValue(vehiclePosition);
 
 		if (!isPositionOccupied)
 			return true;
 		else if (isPositionOccupied
 				&& isVehiclePresentWithId
-				&& mappedPositions.get(vehicleId).equals(vehiclePosition))
+				&& vehicleIdToPosition.get(vehicleId).equals(vehiclePosition))
 			return true;
 		else
 			return false;
-//		for (Map.Entry<Integer, Position> vehicle : mappedPositions.entrySet()) {
+		
+//		for (Map.Entry<Integer, Position> vehicle : vehicleIdToPosition.entrySet()) {
 //			if (vehicle.getValue().equals(vehiclePosition)) {
 //				if (vehicle.getKey().equals(vehicleId))
 //					return true;
@@ -94,6 +94,7 @@ public class Field {
 //					return false;
 //			}
 //		}
+
 //		for (Vehicle v: vehicles) {
 //			if(v.getPosition().equals(vehiclePosition)) {
 //
@@ -110,5 +111,12 @@ public class Field {
 		return this.vehicles.stream()
 				.filter(v -> v.getId() == id)
 				.findAny();
+	}
+
+	public List<Position> getVehiclesPositionsByYCoordinate(int coordinate) {
+		return this.vehicles.stream()
+				.filter(v -> v.getPosition().getY() == coordinate)
+				.map(Vehicle::getPosition)
+				.collect(Collectors.toList());
 	}
 }

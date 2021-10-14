@@ -1,7 +1,7 @@
 package com.elo7.newcommandcenter.vehicle.probe;
 
 import com.elo7.newcommandcenter.field.Field;
-import com.elo7.newcommandcenter.orientation.Orientation;
+import com.elo7.newcommandcenter.vehicle.orientation.Orientation;
 import com.elo7.newcommandcenter.position.Position;
 import com.elo7.newcommandcenter.vehicle.Vehicle;
 
@@ -19,8 +19,7 @@ public class Probe extends Vehicle {
 	@Override
 	public String toString() {
 		return new StringBuilder()
-				.append("Id = ").append(getId())
-				.append(" | Probe Name = ").append(getName())
+				.append(getName())
 				.append(getPosition())
 				.append(" | Facing = ").append(getOrientation().getDescription())
 				.append(" | Num. of movements = ").append(movements).toString();
@@ -28,7 +27,7 @@ public class Probe extends Vehicle {
 
 	@Override
 	public Probe move() {
-		Position newPosition = getPosition().changeCurrentVehiclePosition(getOrientation(), 1);
+		Position newPosition = getPosition().changePositionFromVehicleOrientation(getOrientation(), 1);
 		return new Probe(getId(),getName(), newPosition, getOrientation(), movements+1, field);
 	}
 

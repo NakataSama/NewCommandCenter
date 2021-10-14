@@ -1,6 +1,6 @@
 package com.elo7.newcommandcenter.position;
 
-import com.elo7.newcommandcenter.orientation.Orientation;
+import com.elo7.newcommandcenter.vehicle.orientation.Orientation;
 
 import java.util.Objects;
 
@@ -28,7 +28,7 @@ public class Position {
 				.append(" , Y = ").append(this.y).toString();
 	}
 	
-	public Position changeCurrentVehiclePosition(Orientation orientation, int numberOfSteps) {
+	public Position changePositionFromVehicleOrientation(Orientation orientation, int numberOfSteps) {
 		
 		if (orientation.equals(Orientation.NORTH)) 
 			return new Position(x, y + numberOfSteps);

@@ -1,6 +1,6 @@
 package com.elo7.newcommandcenter.vehicle;
 
-import com.elo7.newcommandcenter.orientation.Orientation;
+import com.elo7.newcommandcenter.vehicle.orientation.Orientation;
 import com.elo7.newcommandcenter.position.Position;
 
 public abstract class Vehicle {
