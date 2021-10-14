@@ -11,8 +11,6 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class CommandCenter {
 
-    static int fieldId = 1;
-    static int vehicleId = 1;
     private Field field;
 
     public String menu() {
@@ -65,7 +63,7 @@ public class CommandCenter {
 
     private void executeCommand(int id, String command) {
         System.out.println("Executing command...");
-        Vehicle vehicle = null;
+        Vehicle vehicle;
 
         if (field.getVehicleById(id).isPresent()) {
             vehicle = field.getVehicleById(id).get();
@@ -88,17 +86,17 @@ public class CommandCenter {
 
     private Field buildField(int x, int y) {
         if (x > 0 && y > 0)
-            return new Field(fieldId++, new Position(x, y) , new ArrayList<Vehicle>());
+            return new Field(1, new Position(x, y) , new ArrayList<Vehicle>());
         else
             throw new RuntimeException("Invalid field size");
     }
 
     private Field buildVehicles(Field fieldInput, int numberOfVehicles) {
         for(int i = 0; i < numberOfVehicles; i++) {
-            int idForProbeName = vehicleId;
+            int probeId = i+1;
             int randomX = ThreadLocalRandom.current().nextInt(0, fieldInput.getPosition().getX());
             int randomY = ThreadLocalRandom.current().nextInt(0, fieldInput.getPosition().getY());
-            Probe probe = new Probe(vehicleId++, "Probe " + idForProbeName, new Position(randomX, randomY), Orientation.NORTH, 0, field);
+            Probe probe = new Probe(probeId, "Probe " + probeId, new Position(randomX, randomY), Orientation.NORTH, 0, field);
             fieldInput = fieldInput.saveVehicle(probe);
         }
         return fieldInput;
@@ -113,7 +111,7 @@ public class CommandCenter {
 
     private void printFieldStatus() {
         StringBuilder status = new StringBuilder();
-        status.append("===== FIELD STATUS =====").append("\n");
+        status.append("===== FIELD ").append(field.getId()).append(" STATUS =====").append("\n");
         for (int i = field.getPosition().getY()-1; i >=0 ; i--) {
             List<Position> occupiedPositionsByRow = field.getVehiclesPositionsByYCoordinate(i);
 

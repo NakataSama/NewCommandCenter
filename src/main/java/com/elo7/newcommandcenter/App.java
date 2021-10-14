@@ -6,7 +6,7 @@ public class App {
 
 		int x = 20; //Type your field horizontal size here;
 		int y = 20; //Type your field vertical size here;
-		int numberOfVehicles = 90; //Type how many vehicles would you like to deploy on the field
+		int numberOfVehicles = 10; //Type how many vehicles would you like to deploy on the field
 
 		String commandChoice = "";
 		CommandCenter commandCenter = new CommandCenter();
