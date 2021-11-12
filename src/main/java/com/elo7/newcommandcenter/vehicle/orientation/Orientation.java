@@ -40,14 +40,14 @@ public enum Orientation {
 		Orientation orientation = getOrientationById(orientationId);
 
 		if (direction == 'l') {
-			if (orientation == Orientation.NORTH)
+			if (orientation.equals(Orientation.NORTH))
 				orientationId = 8;
 			else
 				orientationId--;
 		}
 
 		if (direction == 'r') {
-			if (orientation == Orientation.NORTHWEST)
+			if (orientation.equals(Orientation.NORTHWEST))
 				orientationId = 1;
 			else
 				orientationId++;

@@ -19,13 +19,14 @@ public class CommandCenter {
         String command;
 
         try {
+            printFieldStatus();
             System.out.println("Choose which vehicle to command by typing ID");
             vehicleId = Integer.parseInt(sc.next());
 
             System.out.println("Type your command (valid characters = L, R, M)");
             command = sc.next();
 
-            executeCommand(vehicleId, command);
+            executeCommand(vehicleId, command,field);
             printFieldStatus();
 
             System.out.println("Continue with more commands?");
@@ -57,38 +58,11 @@ public class CommandCenter {
 
         field = buildField(x, y);
         field = buildVehicles(field, numberOfVehicles);
-        printFieldStatus();
         return true;
     }
 
-    private void executeCommand(int id, String command) {
-        System.out.println("Executing command...");
-        Vehicle vehicle;
-
-        if (field.getVehicleById(id).isPresent()) {
-            vehicle = field.getVehicleById(id).get();
-
-            for (char c: command.toLowerCase().toCharArray()) {
-                if (isValidCommand(c)) {
-                    if (c == 'l' || c == 'r')
-                        vehicle = vehicle.rotate(c);
-                    if (c == 'm')
-                        vehicle = vehicle.move();
-                } else
-                    throw new RuntimeException("Invalid Command");
-            }
-
-            field.saveVehicle(vehicle);
-            System.out.println("Command executed!");
-        } else
-            throw new RuntimeException("Invalid Vehicle ID");
-    }
-
     private Field buildField(int x, int y) {
-        if (x > 0 && y > 0)
-            return new Field(1, new Position(x, y) , new ArrayList<Vehicle>());
-        else
-            throw new RuntimeException("Invalid field size");
+        return new Field(1, new Position(x, y) , new ArrayList<Vehicle>());
     }
 
     private Field buildVehicles(Field fieldInput, int numberOfVehicles) {
@@ -100,6 +74,32 @@ public class CommandCenter {
             fieldInput = fieldInput.saveVehicle(probe);
         }
         return fieldInput;
+    }
+
+    private void executeCommand(int id, String command, Field field) {
+        System.out.println("Executing command...");
+        Vehicle vehicle;
+
+        if (field.getVehicleById(id).isPresent()) {
+            vehicle = field.getVehicleById(id).get();
+
+            for (char c: command.toLowerCase().toCharArray()) {
+                if (isValidCommand(c)) {
+                    if (c == 'l' || c == 'r')
+                        vehicle = vehicle.rotate(c);
+
+                    if (c == 'm') {
+                        vehicle.move();
+                        vehicle = vehicle.move();
+                    }
+                } else
+                    throw new RuntimeException("Invalid Command");
+            }
+
+            field.saveVehicle(vehicle);
+            System.out.println("Command executed!");
+        } else
+            throw new RuntimeException("Invalid Vehicle ID");
     }
 
     private boolean isValidCommand(char command) {
@@ -121,7 +121,7 @@ public class CommandCenter {
                         .anyMatch(position -> position.getX() == coordinate);
 
                 if (isXCoordinateOccupied)
-                    status.append("[ x ] ");
+                    status.append("[ ☗ ] ");
                 else
                     status.append("[   ] ");
             }
