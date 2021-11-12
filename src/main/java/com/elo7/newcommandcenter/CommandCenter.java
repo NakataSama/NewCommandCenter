@@ -84,14 +84,15 @@ public class CommandCenter {
             vehicle = field.getVehicleById(id).get();
 
             for (char c: command.toLowerCase().toCharArray()) {
+
                 if (isValidCommand(c)) {
+
                     if (c == 'l' || c == 'r')
                         vehicle = vehicle.rotate(c);
 
-                    if (c == 'm') {
-                        vehicle.move();
+                    if (c == 'm')
                         vehicle = vehicle.move();
-                    }
+
                 } else
                     throw new RuntimeException("Invalid Command");
             }

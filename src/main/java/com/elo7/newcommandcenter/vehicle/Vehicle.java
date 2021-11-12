@@ -38,7 +38,7 @@ public abstract class Vehicle {
             throw new RuntimeException("This vehicle will be out of bounds!");
 
         if(!isPositionAvailable(id, position))
-            throw new RuntimeException("There's another vehicle in this position!");
+            throw new RuntimeException("This vehicle will collide with another one! Rollbacking your commands. Try a different path!");
     }
 
     private boolean isVehiclePositionWithinFieldLimits(Position position) {
@@ -66,26 +66,6 @@ public abstract class Vehicle {
             return true;
         else
             return false;
-
-//		for (Map.Entry<Integer, Position> vehicle : vehicleIdToPosition.entrySet()) {
-//			if (vehicle.getValue().equals(vehiclePosition)) {
-//				if (vehicle.getKey().equals(vehicleId))
-//					return true;
-//				else
-//					return false;
-//			}
-//		}
-
-//		for (Vehicle v: vehicles) {
-//			if(v.getPosition().equals(vehiclePosition)) {
-//
-//				if(v.getId() == vehicleId)
-//					return true;
-//				else
-//					return false;
-//			}
-//		}
-//		return true;
     }
 
 }
